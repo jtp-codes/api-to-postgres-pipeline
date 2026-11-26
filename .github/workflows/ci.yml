@@ -18,7 +18,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U de_user -d telemetry_dw"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
@@ -37,7 +37,7 @@ jobs:
       - name: Run Pytest Proof Suite (Idempotency, Watermark & Pydantic Quarantine)
         env:
           DATABASE_URL: postgresql://de_user:de_password@localhost:5432/telemetry_dw
-        run: pytest -v
+        run: python -m pytest -v
 
       - name: Execute Live Open-Meteo Ingestion (Pass 1)
         env:
